@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Tasks{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between mt-5 mb-4">
+        <h2 class="mb-0">Tasks</h2>
+        <a class="btn btn-success align-self-center" href="tasks/add" >Create Task</a>
+    </div>
+
+    {% if session.success %}
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+             {{ session.success['message'] }}
+        </div>
+    {% endif %}
+
+    <form class="d-flex justify-content-between mb-3" action="" method="GET">
+        <input type="hidden" name="page" value="{{ tasks.currentPage }}"/>
+        <select class="custom-select mr-4" name="sort_by">
+            <option value="id" {{ sort_by == 'id' ? 'selected' : '' }}>ID</option>
+            <option value="name" {{ sort_by == 'name' ? 'selected' : '' }}>Name</option>
+            <option value="email" {{ sort_by == 'email' ? 'selected' : '' }}>Email</option>
+            <option value="status" {{ sort_by == 'status' ? 'selected' : '' }}>Status</option>
+        </select>
+
+        <select class="custom-select mr-4" name="order">
+            <option value="asc" {{ order == 'asc' ? 'selected' : '' }}>ASC</option>
+            <option value="desc" {{ order == 'desc' ? 'selected' : '' }}>DESC</option>
+        </select>
+
+        <button class="btn btn-primary">Order</button>
+    </form>
+
+    <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Text</th>
+            <th scope="col" class="text-right {{ session.user ? 'text-center' : '' }}">Status</th>
+            {% if session.user %}
+                <th scope="col" class="text-right">Action</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+            <tr>
+                <th scope="row">{{task.id}}</th>
+                <td>{{ task.name }}</td>
+                <td>{{ task.email }}</td>
+                <td>{{ task.text }}</td>
+                <td class="d-flex justify-content-end">
+                    {% if task.status == constant('App\\Models\\Task::DONE') %}
+                        <span class="badge badge-success text-uppercase badge-sm">Done</span>
+                    {% elseif task.status == constant('App\\Models\\Task::IN_PROGRESS') %}
+                        <span class="badge badge-danger text-uppercase badge-sm">In progress</span>
+                    {% endif %}
+
+                    {% if task.is_edited %}
+                        <span class="badge badge-success text-uppercase ml-2">Updated</span>
+                    {% else %}
+                        <span class="badge badge-danger ml-2"></span>
+                    {% endif %}
+                </td>
+                {% if session.user %}
+                    <td class="text-right"><a href="tasks/{{task.id}}/edit"><i class="fa fa-edit"></i></a></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if tasks.empty %}
+        <h4>No any result :(</h4>
+    {% endif %}
+
+    {% include 'Pagination/pagination.html' with {items: tasks} %}
+
+{% endblock %}

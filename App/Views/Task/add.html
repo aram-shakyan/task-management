@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-between mt-5 mb-4">
+    <h2 class="mb-0">Add Task</h2>
+    <a class=" btn btn-success align-self-center" href="/">Tasks</a>
+</div>
+<form method="post" action="/tasks/store">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" class="form-control" id="name" placeholder="Enter name"
+               value="{{ session.old_values['name'] ?? '' }}">
+        <small class="form-text text-danger">{{ session.errors['name'] ?? '' }}</small>
+    </div>
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="Enter email"
+               value="{{ session.old_values['email'] ?? '' }}">
+        <small id="emailHelp" class="form-text text-danger">{{ session.errors['email'] ?? '' }}</small>
+    </div>
+    <div class="form-group">
+        <label for="text">Text</label>
+        <textarea class="form-control" id="text" placeholder="Type text" name="text">{{ session.old_values['text'] ?? '' }}</textarea>
+        <small class="form-text text-danger">{{ session.errors['text'] ?? '' }}</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+{% endblock %}

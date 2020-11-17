@@ -1,0 +1,18 @@
+{% if items.lastPage and items.lastPage > 1 %}
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item {{  items.previousPageUrl ? '' : 'disabled' }}">
+            <a class="page-link disabled" href="{{ items.previousPageUrl }}">Previous</a>
+        </li>
+        {% for key, url in items.getUrlRange(1, items.lastPage) %}
+            <li class="page-item {{  items.currentPage == key ? 'active' : '' }}">
+                <a class="page-link" href="{{ url }}">{{ key }}</a>
+            </li>
+        {% endfor %}
+
+        <li class="page-item {{  items.nextPageUrl ? '' : 'disabled' }}"><a class="page-link" href="{{ items.nextPageUrl }}">Next</a></li>
+    </ul>
+</nav>
+
+{% endif %}

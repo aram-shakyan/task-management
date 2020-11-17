@@ -44,7 +44,7 @@ $router = new Core\Router();
 // Add the routes
 $router->add('', ['controller' => 'TaskController', 'action' => 'index', 'auth_always' => true]);
 $router->add('tasks/add', ['controller' => 'TaskController', 'action' => 'add', 'auth_always' => true]);
-$router->add('tasks/store', ['controller' => 'TaskController', 'action' => 'store', 'auth' => false]);
+$router->add('tasks/store', ['controller' => 'TaskController', 'action' => 'store', 'auth_always' => true]);
 $router->add('tasks/{id:\d+}/edit', ['controller' => 'TaskController', 'action' => 'edit', 'auth' => true]);
 $router->add('tasks/{id:\d+}/update', ['controller' => 'TaskController', 'action' => 'update', 'auth' => true]);
 $router->add('sign-in', ['controller' => 'AuthController', 'action' => 'login', 'auth' => false]);
